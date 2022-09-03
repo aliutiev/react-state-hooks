@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import './App.css';
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import Item from './components/item';
 import useList from "./hooks/useList";
 
@@ -11,39 +11,48 @@ const initialList = [
 ];
 
 function App() {
-  const items = useList(initialList);
+  const { list, removeItem, saveItem } = useList(initialList);
   const [editable, setEditable] = useState(false);
 
   function removeItemHandle(e) {
-    items.removeItem(e.target.name);
+    removeItem(e.target.name);
   };
 
-  function makeEditableHandle (){
+  function makeEditableHandle() {
     setEditable(true);
   };
-  
-  function keyPressHandle (e, i) {
-    if(e.key === "Enter"){
+
+  function keyPressHandle(e, i) {
+    if (e.key === "Enter") {
       setEditable(!editable);
-      items.saveItem(i, e.target.value);
+      console.log(saveItem(i, e.target.value))
+
     }
   }
-  
+
   return (
     <div className='App'>
       <header className='App-header'>
         <h2>Grocery List</h2>
-
         {
-          items.list.map((v, k) => {<Item
-            item={v}
-            key={`${k}${v.name}${v.calorie}`}
-            onClick={removeItemHandle} 
-            editable={editable}
-            onDoubleClick={makeEditableHandle}
-            onKeyPress={keyPressHandle}
-            index={k}
-            />})
+          list.map((v, k) => {
+            <Item
+              item={v}
+              key={`${k}${v.name}${v.calorie}`}
+            
+            />
+            {console.log('item end')}
+          }
+            // {<Item
+            //   item={v}
+            //   key={`${k}${v.name}${v.calorie}`}
+            //   onClick={removeItemHandle}
+            //   editable={editable}
+            //   onDoubleClick={makeEditableHandle}
+            //   onKeyPress={keyPressHandle}
+            //   index={k}
+            // />}
+          )
         }
       </header>
 

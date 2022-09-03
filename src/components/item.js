@@ -4,7 +4,7 @@ import './item.css';
 function item(props) {
     return (
         <div className='item-style'>
-
+        
             {
                 (props.editable) ?
                     <input

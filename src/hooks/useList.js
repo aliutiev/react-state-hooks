@@ -9,12 +9,17 @@ function useList(init){
     return {
         list, 
         removeItem(item) {
-            const filteredList = list.filter(v => v.name != item);
+            const filteredList = list.filter(v => v.name !== item);
             setList(filteredList);
         },
         saveItem(index, newVal) {
             const copyList = {...list}
+            // console.log(copyList);
+            // console.log(copyList[index]);
+            // console.log(newVal);
             copyList[index].name = newVal;
+            // console.log(copyList)
+            setList(copyList);
         }
     }
 
