@@ -1,0 +1,23 @@
+// all hooks start with use, if it doesn't start as use it doesn't work like a hook
+
+import { useState } from "react";
+
+function useList(init){
+
+    const [list, setList] = useState(init);
+
+    return {
+        list, 
+        removeItem(item) {
+            const filteredList = list.filter(v => v.name != item);
+            setList(filteredList);
+        },
+        saveItem(index, newVal) {
+            const copyList = {...list}
+            copyList[index].name = newVal;
+        }
+    }
+
+}
+
+export default useList;

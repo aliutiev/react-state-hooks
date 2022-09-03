@@ -1,8 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
 import React, { useState, useCallback } from 'react';
-import Item from './components/item';
-import useList from "./hooks/useList";
+import Item from '../components/item';
 
 const initialList = [
   { name: 'tomato', calorie: 20 },
@@ -11,11 +10,24 @@ const initialList = [
 ];
 
 function App() {
-  const items = useList(initialList);
+
+  //object handled separately than the rest
+  const [list, setList] = useState(initialList);
+
   const [editable, setEditable] = useState(false);
 
+  const removeUnhealthyHandle = (e) => {
+    // shallow copy
+    // const copyList = [... list];
+
+    const filteredList = list.filter(v => v.calorie <= 50);
+    setList(filteredList);
+  };
+
   function removeItemHandle(e) {
-    items.removeItem(e.target.name);
+    // console.dir(e.target.name);
+    const removedlist = list.filter(v => v.name != e.target.name);
+    setList(removedlist);
   };
 
   function makeEditableHandle (){
@@ -25,17 +37,17 @@ function App() {
   function keyPressHandle (e, i) {
     if(e.key === "Enter"){
       setEditable(!editable);
-      items.saveItem(i, e.target.value);
+      const copyList = {...list}
+      copyList[i].name = e.target.value;
     }
   }
-  
   return (
     <div className='App'>
       <header className='App-header'>
         <h2>Grocery List</h2>
 
         {
-          items.list.map((v, k) => {<Item
+          list.map((v, k) => <Item
             item={v}
             key={`${k}${v.name}${v.calorie}`}
             onClick={removeItemHandle} 
@@ -43,8 +55,10 @@ function App() {
             onDoubleClick={makeEditableHandle}
             onKeyPress={keyPressHandle}
             index={k}
-            />})
+            />)
         }
+
+        <button className='remove-button' onClick={removeUnhealthyHandle}>Remove Unhealthy</button>
       </header>
 
     </div>
